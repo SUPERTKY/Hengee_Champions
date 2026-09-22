@@ -1,6 +1,7 @@
 "use strict";
 
 const TIMING = Object.freeze({
+  initialBlack: 2000,
   iconFadeIn: 1000,
   iconHold: 2000,
   iconFadeOut: 1500,
@@ -78,6 +79,7 @@ async function prepare() {
   }
   // Paint the initial black frame before attempting music and the icon fade.
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  await wait(TIMING.initialBlack);
   await start();
 }
 
