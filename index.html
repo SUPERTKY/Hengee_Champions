@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>ヘンジーチャンピオンズ</title>
+  <style>html, body { margin: 0; background: #000; }</style>
+  <link rel="stylesheet" href="styles.css">
+  <script src="title.js" defer></script>
+</head>
+<body>
+  <!-- Keep audio outside the screens so switching screens never stops it. -->
+  <audio id="title-music" src="assets/sounds/Title.mp3" preload="auto" loop></audio>
+  <main id="title-screen" class="screen" hidden>
+    <!-- Placeholder for the next screen; replace this content as the game grows. -->
+    <h1 tabindex="-1">ヘンジーチャンピオンズ</h1>
+  </main>
+  <div id="intro" class="screen">
+    <img id="intro-icon" src="assets/images/Icon.png" alt="ヘンジーチャンピオンズ" decoding="async">
+  </div>
+  <button id="start" type="button" hidden>タップ・クリックして開始</button>
+  <p id="error" role="alert" hidden></p>
+  <noscript>このゲームを開始するには JavaScript を有効にしてください。</noscript>
+</body>
+</html>
