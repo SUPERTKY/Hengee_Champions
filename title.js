@@ -12,6 +12,8 @@ const TIMING = Object.freeze({
 const icon = document.getElementById("intro-icon");
 const intro = document.getElementById("intro");
 const screen = document.getElementById("title-screen");
+const titleLogo = document.getElementById("title-logo");
+const ink = document.getElementById("title-ink");
 const music = document.getElementById("title-music");
 const startButton = document.getElementById("start");
 const errorMessage = document.getElementById("error");
@@ -42,6 +44,9 @@ async function playIntro() {
   await wait(TIMING.blackPause);
   screen.hidden = false;
   intro.hidden = true;
+  // Play the one-shot title sound over the continuing BGM.
+  ink.currentTime = 0;
+  ink.play().catch((error) => console.warn("Title sound could not play:", error));
   await fade(screen, 0, 1, TIMING.screenFadeIn);
   screen.querySelector("h1").focus({ preventScroll: true });
   // The same audio element keeps playing through the entire transition.
@@ -52,6 +57,17 @@ async function start() {
   starting = true;
   startButton.hidden = true;
   errorMessage.hidden = true;
+  // Unlock this audio element during the same user gesture as the BGM.
+  // The muted priming playback is stopped before the intro begins.
+  ink.muted = true;
+  const inkReady = ink.play().then(() => {
+    ink.pause();
+    ink.currentTime = 0;
+  }).catch(() => {
+    // A later attempt is still made when the title appears.
+  }).finally(() => {
+    ink.muted = false;
+  });
   try {
     // Call play directly from the button event when autoplay needs a gesture.
     await music.play();
@@ -63,6 +79,7 @@ async function start() {
     }
     return;
   }
+  await inkReady;
   started = true;
   starting = false;
   await playIntro();
@@ -72,9 +89,9 @@ startButton.addEventListener("click", start);
 
 async function prepare() {
   try {
-    await icon.decode();
+    await Promise.all([icon.decode(), titleLogo.decode()]);
   } catch {
-    showError("アイコンを読み込めませんでした。ページを再読み込みしてください。");
+    showError("画像を読み込めませんでした。ページを再読み込みしてください。");
     return;
   }
   // Paint the initial black frame before attempting music and the icon fade.
