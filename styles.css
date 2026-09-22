@@ -4,9 +4,9 @@ body { color: #fff; font-family: system-ui, sans-serif; overflow: hidden; }
 [hidden] { display: none !important; }
 .screen { position: fixed; inset: 0; display: grid; place-items: center; }
 #intro { background: #000; z-index: 2; }
-#intro-icon { width: min(64vw, 420px); height: min(64vw, 420px, 65vh); object-fit: contain; opacity: 0; }
-#title-screen { background: radial-gradient(ellipse at center, #20263d, #080b13); opacity: 0; padding: 24px; text-align: center; }
-h1 { font-size: clamp(1.6rem, 5vw, 3.6rem); letter-spacing: .08em; }
+#intro-icon { width: min(76vw, 520px); height: min(76vw, 520px, 78vh); object-fit: contain; opacity: 0; }
+#title-screen { background: #080b13 url("assets/images/stage.png") center / cover no-repeat; opacity: 0; padding: 24px; text-align: center; }
+h1 { font-size: clamp(1.6rem, 5vw, 3.6rem); letter-spacing: .08em; text-shadow: 0 2px 8px #000, 0 0 24px #000; }
 h1:focus { outline: none; }
 #start { position: fixed; z-index: 3; left: 50%; top: 75%; transform: translate(-50%, -50%); padding: 14px 22px; border: 1px solid #777; border-radius: 8px; background: #111; color: #fff; font: inherit; white-space: nowrap; cursor: pointer; }
 #start:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
