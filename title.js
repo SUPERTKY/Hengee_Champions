@@ -61,7 +61,7 @@ async function playIntro() {
   await fade(titleHeading, 1, 0, TIMING.titleFadeOut);
   titleHeading.hidden = true;
   menuButtonImage.hidden = false;
-  screen.focus({ preventScroll: true });
+  menuButtonImage.focus({ preventScroll: true });
   // The same audio element keeps playing through the entire transition.
 }
 
