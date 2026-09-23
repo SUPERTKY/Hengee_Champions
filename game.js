@@ -14,9 +14,13 @@
   let animationSource = "";
   function updateAnimation(direction = 0) {
     if (direction !== 0) player.facing = direction;
+    const isRunning = direction !== 0;
+    const runScale = isRunning ? (config.character.runScale || 1) : 1;
+    // Keep the character's feet anchored while enlarging the run animation.
+    image.style.transformOrigin = "center bottom";
     // The source artwork faces right. Mirror only the artwork when facing left.
-    image.style.transform = player.facing === -1 ? "scaleX(-1)" : "scaleX(1)";
-    const source = direction !== 0 ? (config.character.runSrc || config.character.src) : config.character.src;
+    image.style.transform = `scale(${runScale}) scaleX(${player.facing === -1 ? -1 : 1})`;
+    const source = isRunning ? (config.character.runSrc || config.character.src) : config.character.src;
     // Reassign only on state changes so GIF playback is not restarted each frame.
     if (source && source !== animationSource) {
       animationSource = source;
