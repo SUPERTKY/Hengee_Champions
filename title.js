@@ -7,12 +7,16 @@ const TIMING = Object.freeze({
   iconFadeOut: 1500,
   blackPause: 500,
   screenFadeIn: 1500,
+  titleHold: 3000,
+  titleFadeOut: 1000,
 });
 
 const icon = document.getElementById("intro-icon");
 const intro = document.getElementById("intro");
 const screen = document.getElementById("title-screen");
 const titleLogo = document.getElementById("title-logo");
+const titleHeading = screen.querySelector("h1");
+const menuButtonImage = document.getElementById("menu-button-image");
 const ink = document.getElementById("title-ink");
 const music = document.getElementById("title-music");
 const startButton = document.getElementById("start");
@@ -46,11 +50,16 @@ async function playIntro() {
   intro.hidden = true;
   // Finish revealing the background before showing the title and its sound.
   await fade(screen, 0, 1, TIMING.screenFadeIn);
-  screen.querySelector("h1").hidden = false;
+  titleHeading.hidden = false;
   // Play the one-shot title sound over the continuing BGM.
   ink.currentTime = 0;
   ink.play().catch((error) => console.warn("Title sound could not play:", error));
-  screen.querySelector("h1").focus({ preventScroll: true });
+  titleHeading.focus({ preventScroll: true });
+  await wait(TIMING.titleHold);
+  await fade(titleHeading, 1, 0, TIMING.titleFadeOut);
+  titleHeading.hidden = true;
+  menuButtonImage.hidden = false;
+  screen.focus({ preventScroll: true });
   // The same audio element keeps playing through the entire transition.
 }
 
