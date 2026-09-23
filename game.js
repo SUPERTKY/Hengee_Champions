@@ -14,8 +14,8 @@
   let animationSource = "";
   function updateAnimation(direction = 0) {
     if (direction !== 0) player.facing = direction;
-    // Both source GIFs face left. Mirror only the artwork when facing right.
-    image.style.transform = player.facing === 1 ? "scaleX(-1)" : "scaleX(1)";
+    // The source artwork faces right. Mirror only the artwork when facing left.
+    image.style.transform = player.facing === -1 ? "scaleX(-1)" : "scaleX(1)";
     const source = direction !== 0 ? (config.character.runSrc || config.character.src) : config.character.src;
     // Reassign only on state changes so GIF playback is not restarted each frame.
     if (source && source !== animationSource) {
@@ -49,7 +49,9 @@
   playerElement.style.height = config.character.height + "px";
 
   function update(dt) {
-    const direction = Number(keys.has("ArrowRight")) - Number(keys.has("ArrowLeft"));
+    const movingRight = keys.has("KeyD") || keys.has("ArrowRight");
+    const movingLeft = keys.has("KeyA") || keys.has("ArrowLeft");
+    const direction = Number(movingRight) - Number(movingLeft);
     updateAnimation(direction);
     player.x = clamp(player.x + direction * config.moveSpeed * dt, 0, config.world.width - config.character.width);
     const oldBottom = player.y + config.character.height;
@@ -73,7 +75,7 @@
   }
   document.addEventListener("keydown", (event) => {
     if (!running || event.target.closest("input, button, summary, textarea, select")) return;
-    if (!["ArrowLeft", "ArrowRight", "Space"].includes(event.code)) return;
+    if (!["KeyA", "KeyD", "ArrowLeft", "ArrowRight", "Space"].includes(event.code)) return;
     event.preventDefault();
     keys.add(event.code);
     if (event.code === "Space" && !event.repeat && player.grounded) {
