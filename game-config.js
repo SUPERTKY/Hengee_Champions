@@ -3,7 +3,7 @@
 window.GAME_CONFIG = {
   world: { width: 1280, height: 720 },
   platform: { x: 0, y: 445, width: 1280, height: 32 },
-  character: { src: "assets/character/idle.gif", runSrc: "assets/character/run.gif", width: 80, height: 100 },
+  character: { src: "assets/character/idle.gif", runSrc: "assets/character/run.gif", width: 80, height: 100, runScale: 1.6 },
   gravity: 1800,
   moveSpeed: 300,
   jumpSpeed: 680,
