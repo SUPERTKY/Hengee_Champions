@@ -44,10 +44,12 @@ async function playIntro() {
   await wait(TIMING.blackPause);
   screen.hidden = false;
   intro.hidden = true;
+  // Finish revealing the background before showing the title and its sound.
+  await fade(screen, 0, 1, TIMING.screenFadeIn);
+  screen.querySelector("h1").hidden = false;
   // Play the one-shot title sound over the continuing BGM.
   ink.currentTime = 0;
   ink.play().catch((error) => console.warn("Title sound could not play:", error));
-  await fade(screen, 0, 1, TIMING.screenFadeIn);
   screen.querySelector("h1").focus({ preventScroll: true });
   // The same audio element keeps playing through the entire transition.
 }
