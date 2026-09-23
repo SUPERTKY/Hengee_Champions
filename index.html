@@ -10,6 +10,8 @@
   <link rel="preload" as="image" href="assets/images/Title.png">
   <link rel="preload" as="image" href="assets/images/button.png">
   <link rel="stylesheet" href="styles.css">
+  <script src="game-config.js" defer></script>
+  <script src="game.js" defer></script>
   <script src="title.js" defer></script>
 </head>
 <body>
@@ -18,8 +20,26 @@
   <audio id="title-ink" src="assets/sounds/Ink.mp3" preload="auto"></audio>
   <main id="title-screen" class="screen" tabindex="-1" hidden>
     <h1 tabindex="-1" hidden><img id="title-logo" src="assets/images/Title.png" alt="ヘンジーチャンピオンズ" decoding="async"></h1>
-    <img id="menu-button-image" src="assets/images/button.png" alt="ボタン" decoding="async" hidden>
+    <button id="menu-button-image" type="button" aria-label="ゲーム開始" hidden><img src="assets/images/button.png" alt="" decoding="async"></button>
   </main>
+  <section id="game-screen" class="screen" aria-label="ゲーム" hidden>
+    <div id="game-world" tabindex="-1">
+      <div id="platform" aria-label="足場の当たり判定"></div>
+      <div id="player"><img id="player-image" alt="キャラクター" hidden><span id="player-placeholder">仮</span></div>
+    </div>
+    <details id="platform-editor" open>
+      <summary>足場の位置・サイズ</summary>
+      <p>1280 × 720基準。左上がX=0、Y=0。</p>
+      <label>X <input data-platform="x" type="number" step="1" min="0" max="1279"></label>
+      <label>Y <input data-platform="y" type="number" step="1" min="0" max="719"></label>
+      <label>幅 <input data-platform="width" type="number" step="1" min="1" max="1280"></label>
+      <label>高さ <input data-platform="height" type="number" step="1" min="1" max="720"></label>
+      <label><input id="show-collision" type="checkbox" checked>赤い判定を表示</label>
+      <button id="reset-platform" type="button">初期値に戻す</button>
+      <output id="platform-values"></output>
+      <p>変更はこのブラウザに保存。← →で移動、Spaceでジャンプ。</p>
+    </details>
+  </section>
   <div id="intro" class="screen">
     <img id="intro-icon" src="assets/images/Icon.png" alt="ヘンジーチャンピオンズ" decoding="async">
   </div>
