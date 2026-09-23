@@ -3,25 +3,12 @@
   const config = window.GAME_CONFIG;
   const get = (id) => document.getElementById(id);
   const world = get("game-world"), gameScreen = get("game-screen");
-  const playerElement = get("player"), platformElement = get("platform");
+  const playerElement = get("player");
   const image = get("player-image"), placeholder = get("player-placeholder");
-  const storageKey = "hengee-platform-v1";
-  const inputs = [...document.querySelectorAll("[data-platform]")];
   const keys = new Set();
   const clamp = (n, low, high) => Math.max(low, Math.min(high, n));
-  function normalize(value) {
-    const p = { ...config.platform };
-    for (const key of ["x", "y", "width", "height"]) {
-      if (Number.isFinite(value?.[key])) p[key] = value[key];
-    }
-    p.x = clamp(p.x, 0, config.world.width - 1);
-    p.y = clamp(p.y, 0, config.world.height - 1);
-    p.width = clamp(p.width, 1, config.world.width - p.x);
-    p.height = clamp(p.height, 1, config.world.height - p.y);
-    return p;
-  }
-  let platform = normalize(config.platform);
-  try { platform = normalize(JSON.parse(localStorage.getItem(storageKey))); } catch {}
+  // Always use the confirmed full-width platform; old editor saves are ignored.
+  const platform = { ...config.platform, x: 0, width: config.world.width };
   const player = { x: 0, y: 0, vy: 0, grounded: true };
   let running = false, previousTime;
   function renderPlayer() {
@@ -35,14 +22,6 @@
     player.grounded = true;
     renderPlayer();
   }
-  function renderPlatform() {
-    for (const [key, css] of [["x","left"],["y","top"],["width","width"],["height","height"]]) {
-      platformElement.style[css] = platform[key] + "px";
-    }
-    for (const input of inputs) input.value = platform[input.dataset.platform];
-    get("platform-values").textContent = "platform: " + JSON.stringify(platform);
-    respawn();
-  }
   function resize() {
     const scale = Math.min(window.innerWidth / config.world.width, window.innerHeight / config.world.height);
     world.style.width = config.world.width + "px";
@@ -51,25 +30,6 @@
     world.style.left = (window.innerWidth - config.world.width * scale) / 2 + "px";
     world.style.top = (window.innerHeight - config.world.height * scale) / 2 + "px";
   }
-  for (const input of inputs) {
-    input.addEventListener("change", () => {
-      if (input.value.trim() === "" || !Number.isFinite(Number(input.value))) {
-        renderPlatform();
-        return;
-      }
-      platform = normalize({ ...platform, [input.dataset.platform]: Number(input.value) });
-      try { localStorage.setItem(storageKey, JSON.stringify(platform)); } catch {}
-      renderPlatform();
-    });
-  }
-  get("reset-platform").addEventListener("click", () => {
-    try { localStorage.removeItem(storageKey); } catch {}
-    platform = normalize(config.platform);
-    renderPlatform();
-  });
-  get("show-collision").addEventListener("change", (event) => {
-    platformElement.style.visibility = event.target.checked ? "visible" : "hidden";
-  });
   image.addEventListener("load", () => { image.hidden = false; placeholder.hidden = true; });
   image.addEventListener("error", () => { image.hidden = true; placeholder.hidden = false; });
   if (config.character.src) image.src = config.character.src;
@@ -123,5 +83,5 @@
     world.focus({ preventScroll: true });
     requestAnimationFrame(frame);
   });
-  renderPlatform();
+  respawn();
 })();
