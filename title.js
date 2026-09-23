@@ -7,6 +7,7 @@ const TIMING = Object.freeze({
   iconFadeOut: 1500,
   blackPause: 500,
   screenFadeIn: 1500,
+  titleRevealDelay: 1000,
   titleHold: 3000,
   titleFadeOut: 1000,
 });
@@ -50,6 +51,7 @@ async function playIntro() {
   intro.hidden = true;
   // Finish revealing the background before showing the title and its sound.
   await fade(screen, 0, 1, TIMING.screenFadeIn);
+  await wait(TIMING.titleRevealDelay);
   titleHeading.hidden = false;
   // Play the one-shot title sound over the continuing BGM.
   ink.currentTime = 0;
