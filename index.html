@@ -8,6 +8,7 @@
   <style>html, body { margin: 0; background: #000; }</style>
   <link rel="preload" as="image" href="assets/images/stage.png">
   <link rel="preload" as="image" href="assets/images/Title.png">
+  <link rel="preload" as="image" href="assets/images/button.png">
   <link rel="stylesheet" href="styles.css">
   <script src="title.js" defer></script>
 </head>
@@ -15,8 +16,9 @@
   <!-- Keep audio outside the screens so switching screens never stops it. -->
   <audio id="title-music" src="assets/sounds/Title.mp3" preload="auto" loop></audio>
   <audio id="title-ink" src="assets/sounds/Ink.mp3" preload="auto"></audio>
-  <main id="title-screen" class="screen" hidden>
+  <main id="title-screen" class="screen" tabindex="-1" hidden>
     <h1 tabindex="-1" hidden><img id="title-logo" src="assets/images/Title.png" alt="ヘンジーチャンピオンズ" decoding="async"></h1>
+    <img id="menu-button-image" src="assets/images/button.png" alt="ボタン" decoding="async" hidden>
   </main>
   <div id="intro" class="screen">
     <img id="intro-icon" src="assets/images/Icon.png" alt="ヘンジーチャンピオンズ" decoding="async">

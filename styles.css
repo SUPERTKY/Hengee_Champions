@@ -12,3 +12,6 @@ h1:focus { outline: none; }
 #start { position: fixed; z-index: 3; left: 50%; top: 75%; transform: translate(-50%, -50%); padding: 14px 22px; border: 1px solid #777; border-radius: 8px; background: #111; color: #fff; font: inherit; white-space: nowrap; cursor: pointer; }
 #start:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
 #error, noscript { position: fixed; z-index: 4; bottom: 24px; width: 100%; padding: 0 24px; text-align: center; }
+
+#menu-button-image { position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%); width: min(60vw, 320px); max-height: 30vh; object-fit: contain; }
+#title-screen:focus { outline: none; }
