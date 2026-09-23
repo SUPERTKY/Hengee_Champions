@@ -9,8 +9,20 @@
   const clamp = (n, low, high) => Math.max(low, Math.min(high, n));
   // Always use the confirmed full-width platform; old editor saves are ignored.
   const platform = { ...config.platform, x: 0, width: config.world.width };
-  const player = { x: 0, y: 0, vy: 0, grounded: true };
+  const player = { x: 0, y: 0, vy: 0, grounded: true, facing: -1 };
   let running = false, previousTime;
+  let animationSource = "";
+  function updateAnimation(direction = 0) {
+    if (direction !== 0) player.facing = direction;
+    // Both source GIFs face left. Mirror only the artwork when facing right.
+    image.style.transform = player.facing === 1 ? "scaleX(-1)" : "scaleX(1)";
+    const source = direction !== 0 ? (config.character.runSrc || config.character.src) : config.character.src;
+    // Reassign only on state changes so GIF playback is not restarted each frame.
+    if (source && source !== animationSource) {
+      animationSource = source;
+      image.src = source;
+    }
+  }
   function renderPlayer() {
     playerElement.style.left = player.x + "px";
     playerElement.style.top = player.y + "px";
@@ -32,12 +44,13 @@
   }
   image.addEventListener("load", () => { image.hidden = false; placeholder.hidden = true; });
   image.addEventListener("error", () => { image.hidden = true; placeholder.hidden = false; });
-  if (config.character.src) image.src = config.character.src;
+  updateAnimation();
   playerElement.style.width = config.character.width + "px";
   playerElement.style.height = config.character.height + "px";
 
   function update(dt) {
     const direction = Number(keys.has("ArrowRight")) - Number(keys.has("ArrowLeft"));
+    updateAnimation(direction);
     player.x = clamp(player.x + direction * config.moveSpeed * dt, 0, config.world.width - config.character.width);
     const oldBottom = player.y + config.character.height;
     player.vy += config.gravity * dt;
